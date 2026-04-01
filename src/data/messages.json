@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1774741766494",
+    "name": "Test",
+    "email": "test@gmail.com",
+    "subject": "asd",
+    "message": "asd",
+    "createdAt": "2026-03-28T23:49:26.494Z",
+    "read": true,
+    "emailSent": true
+  },
+  {
+    "id": "1774741665288",
+    "name": "Email Test",
+    "email": "test@example.com",
+    "subject": "Testing Resend",
+    "message": "Testing email delivery via Resend API.",
+    "createdAt": "2026-03-28T23:47:45.288Z",
+    "read": true,
+    "emailSent": true
+  },
+  {
+    "id": "1774741637482",
+    "name": "Email Test",
+    "email": "test@example.com",
+    "subject": "Testing Resend Integration",
+    "message": "This test should trigger an actual email via Resend.",
+    "createdAt": "2026-03-28T23:47:17.482Z",
+    "read": true,
+    "emailSent": true
+  },
+  {
+    "id": "1774741053440",
+    "name": "Test User",
+    "email": "test@example.com",
+    "subject": "Test Contact Form",
+    "message": "This is a test message to verify the contact form is working properly.",
+    "createdAt": "2026-03-28T23:37:33.440Z",
+    "read": true,
+    "emailSent": false
+  }
+]

@@ -1,0 +1,109 @@
+{
+  "sections": {
+    "hero": {
+      "active": true
+    },
+    "events": {
+      "active": true
+    },
+    "speakers": {
+      "active": false
+    },
+    "agenda": {
+      "active": false
+    },
+    "attendees": {
+      "active": true
+    },
+    "courses": {
+      "active": false
+    },
+    "sponsors": {
+      "active": false
+    },
+    "tickets": {
+      "active": false
+    },
+    "faq": {
+      "active": true
+    },
+    "contact": {
+      "active": true
+    }
+  },
+  "hero": {
+    "badge": "2026 Edition — San José, Costa Rica",
+    "heading": "Igniting a Business Transformation Wave Across the World",
+    "headingHighlight": "Transformation",
+    "subheading": "Reshaping how organizations operate through next-gen practices, fostering agility and innovation to drive sustainable change and establish new benchmarks for Operational Excellence worldwide.",
+    "tagline": "This isn’t just an event—it’s a global movement to future-proof businesses and inspire growth in an ever-evolving landscape.",
+    "ticketsLink": "https://cr.agileforum.org/",
+    "heroLogo": "/logos/herologo-1774734775601.svg",
+    "headerLogo": "/logo.svg"
+  },
+  "events": [
+    {
+      "id": "1",
+      "title": "AgileForum 2026",
+      "location": "San José, Costa Rica",
+      "date": "Coming Soon",
+      "description": "Join us for the premier Agile Forum dedicated to Organizational Transformation. Experience expert keynotes, immersive sessions, and exclusive networking in one of Central America’s most dynamic and forward-thinking business ecosystems.",
+      "highlight": true,
+      "flag": "🇨🇷",
+      "link": "https://cr.agileforum.org/"
+    }
+  ],
+  "speakers": [
+    {
+      "id": "1",
+      "name": "Dr. Jeff Sutherland",
+      "title": "Co-Creator of Scrum",
+      "company": "Scrum Inc.",
+      "bio": "Pioneer of the Scrum framework and agile methodology, transforming how organizations deliver value worldwide.",
+      "initials": "JS",
+      "color": "from-crimson to-crimson-dark"
+    }
+  ],
+  "faq": [
+    {
+      "id": "1",
+      "question": "What is AgileForum?",
+      "answer": "AgileForum is the premier global conference dedicated to Agile and organizational transformation. We bring together thought leaders, practitioners, and innovators from around the world to share insights, best practices, and the latest trends in agile methodologies."
+    },
+    {
+      "id": "2",
+      "question": "When and where is AgileForum 2026?",
+      "answer": "AgileForum 2026 will be held in San José, Costa Rica. Exact dates will be announced soon. Stay tuned by following us on LinkedIn or signing up for updates via our contact form."
+    },
+    {
+      "id": "3",
+      "question": "Who should attend?",
+      "answer": "AgileForum is designed for anyone interested in organizational transformation: executives, managers, Scrum Masters, Product Owners, agile coaches, developers, and anyone looking to adopt or improve agile practices in their organization."
+    },
+    {
+      "id": "4",
+      "question": "What is included in the ticket?",
+      "answer": "Your ticket includes access to all keynote sessions, breakout sessions, networking events, lunch and refreshments, and access to the sponsor expo. Workshop day tickets may be purchased separately or as part of a full-access package."
+    },
+    {
+      "id": "5",
+      "question": "Are there group discounts?",
+      "answer": "Yes! We offer discounts for groups of 5 or more. Contact us at info@agileforum.org for group pricing and corporate packages."
+    },
+    {
+      "id": "6",
+      "question": "Will sessions be recorded?",
+      "answer": "Select keynote sessions will be recorded and made available to registered attendees after the event. Workshop sessions are live-only experiences."
+    },
+    {
+      "id": "7",
+      "question": "What is the cancellation policy?",
+      "answer": "Full refunds are available up to 30 days before the event. After that, a 50% refund is available up to 14 days before the event. Tickets are transferable to another attendee at any time."
+    },
+    {
+      "id": "8",
+      "question": "How can I become a speaker or sponsor?",
+      "answer": "We welcome proposals from industry experts and practitioners. For speaking opportunities or sponsorship packages, please reach out to us at info@agileforum.org."
+    }
+  ]
+}
