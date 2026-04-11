@@ -35,19 +35,36 @@ export default function AnimatedHeroLogo() {
     const agileLetters = svg.querySelectorAll(".agile-letter");
     const forumLetters = svg.querySelectorAll(".forum-letter");
     const allPaths = svg.querySelectorAll(".logo-path");
+    const mobile = window.innerWidth < 768;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reducedMotion) return; // Paths already have fill="white" in JSX
 
     const ctx = gsap.context(() => {
-      // ── Phase 1: Stroke draw-on effect ──
-      // Set initial state: invisible fill, visible stroke
+      if (mobile) {
+        // Simplified animation on mobile: simple fade-in instead of stroke draw
+        gsap.set(allPaths, { opacity: 0 });
+        gsap.to(allPaths, {
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.03,
+          ease: "power2.out",
+        });
+        return;
+      }
+
+      // ── Phase 1: Stroke draw-on effect (desktop only) ──
       gsap.set(allPaths, {
         fill: "transparent",
         stroke: "white",
         strokeWidth: 0.3,
         strokeDasharray: function (this: SVGPathElement) {
-          return (this as SVGPathElement).getTotalLength?.() || 200;
+          try { return (this as SVGPathElement).getTotalLength(); }
+          catch { return 200; }
         },
         strokeDashoffset: function (this: SVGPathElement) {
-          return (this as SVGPathElement).getTotalLength?.() || 200;
+          try { return (this as SVGPathElement).getTotalLength(); }
+          catch { return 200; }
         },
       });
 
@@ -55,7 +72,6 @@ export default function AnimatedHeroLogo() {
         defaults: { ease: "power2.inOut" },
       });
 
-      // Draw AGILE letters with strokes
       tl.to(agileLetters, {
         strokeDashoffset: 0,
         duration: 1.2,
@@ -63,38 +79,15 @@ export default function AnimatedHeroLogo() {
         ease: "power2.out",
       });
 
-      // Draw FORUM LATAM slightly overlapping
       tl.to(
         forumLetters,
-        {
-          strokeDashoffset: 0,
-          duration: 0.8,
-          stagger: 0.06,
-          ease: "power2.out",
-        },
+        { strokeDashoffset: 0, duration: 0.8, stagger: 0.06, ease: "power2.out" },
         "-=0.5"
       );
 
       // ── Phase 2: Fill in + fade out strokes ──
-      tl.to(
-        allPaths,
-        {
-          fill: "white",
-          duration: 0.6,
-          stagger: 0.02,
-          ease: "power1.in",
-        },
-        "-=0.3"
-      );
-
-      tl.to(
-        allPaths,
-        {
-          stroke: "transparent",
-          duration: 0.4,
-        },
-        "-=0.3"
-      );
+      tl.to(allPaths, { fill: "white", duration: 0.6, stagger: 0.02, ease: "power1.in" }, "-=0.3");
+      tl.to(allPaths, { stroke: "transparent", duration: 0.4 }, "-=0.3");
 
       // ── Phase 3: Subtle continuous glow pulse ──
       gsap.to(svg, {

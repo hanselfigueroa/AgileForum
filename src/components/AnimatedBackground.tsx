@@ -32,13 +32,20 @@ export default function AnimatedBackground() {
   const mouseRef = useRef({ x: -9999, y: -9999 });
 
   useEffect(() => {
+    // Skip canvas animation entirely if user prefers reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const mobile = window.innerWidth < 768;
     let w = 0;
     let h = 0;
+    let lastDrawTime = 0;
+    // Throttle to ~30fps on mobile (33ms), full speed on desktop
+    const frameBudget = mobile ? 33 : 0;
 
     function resize() {
       if (!canvas) return;
@@ -49,7 +56,10 @@ export default function AnimatedBackground() {
     }
 
     function init() {
-      const count = Math.max(14, Math.floor((w * h) / 50000));
+      // Fewer particles on mobile for better performance
+      const count = mobile
+        ? Math.max(6, Math.floor((w * h) / 80000))
+        : Math.max(14, Math.floor((w * h) / 50000));
       particlesRef.current = Array.from({ length: count }, () => {
         const vx = (Math.random() - 0.5) * 0.4;
         const vy = (Math.random() - 0.5) * 0.3;
@@ -69,8 +79,18 @@ export default function AnimatedBackground() {
       });
     }
 
-    function draw() {
+    function draw(now?: number) {
       if (!ctx) return;
+
+      // Throttle frame rate on mobile
+      if (frameBudget > 0 && now !== undefined) {
+        if (now - lastDrawTime < frameBudget) {
+          frameRef.current = requestAnimationFrame(draw);
+          return;
+        }
+        lastDrawTime = now;
+      }
+
       ctx.clearRect(0, 0, w, h);
 
       const t = performance.now() * 0.001;
@@ -124,23 +144,25 @@ export default function AnimatedBackground() {
         ctx.fill();
       }
 
-      // Draw connecting lines between nearby particles
-      const particles = particlesRef.current;
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i];
-          const b = particles[j];
-          const ddx = a.x - b.x;
-          const ddy = a.y - b.y;
-          const d = Math.sqrt(ddx * ddx + ddy * ddy);
-          if (d < 350) {
-            const lineAlpha = (1 - d / 350) * 0.06;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(${a.color}, ${lineAlpha})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
+      // Draw connecting lines between nearby particles (skip on mobile for perf)
+      if (!mobile) {
+        const particles = particlesRef.current;
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i];
+            const b = particles[j];
+            const ddx = a.x - b.x;
+            const ddy = a.y - b.y;
+            const d = Math.sqrt(ddx * ddx + ddy * ddy);
+            if (d < 350) {
+              const lineAlpha = (1 - d / 350) * 0.06;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.strokeStyle = `rgba(${a.color}, ${lineAlpha})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
           }
         }
       }

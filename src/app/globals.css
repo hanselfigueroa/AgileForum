@@ -29,6 +29,33 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Ensure animated elements are visible if JS/GSAP fails to load */
+@media (prefers-reduced-motion: reduce) {
+  [data-animate],
+  [data-hero-logo],
+  [data-hero-badge],
+  [data-hero-word],
+  [data-hero-sub],
+  [data-hero-tagline],
+  [data-hero-cta],
+  [data-hero-scroll] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* GPU-accelerate animated elements on mobile for smoother transforms */
+@media (max-width: 767px) {
+  [data-animate],
+  [data-hero-logo],
+  [data-hero-word],
+  [data-hero-cta] {
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
 body {
   background: #ffffff;
   color: var(--color-dark);
