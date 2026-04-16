@@ -33,8 +33,10 @@ export default function Hero({ data, showAgendaButton = true }: HeroProps) {
         }}
       />
 
-      {/* Animated decorative orbs with parallax */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Animated decorative orbs with parallax — hidden on mobile: stacked blur-3xl
+          layers over an animating canvas starves rAF on iOS Safari and stretches GSAP
+          tweens into slow-motion. */}
+      <div className="absolute inset-0 overflow-hidden hidden md:block">
         <div
           data-hero-orb-1
           className="absolute top-1/4 left-1/4 w-96 h-96 bg-crimson/10 rounded-full blur-3xl"
@@ -59,7 +61,7 @@ export default function Hero({ data, showAgendaButton = true }: HeroProps) {
             width={280}
             height={140}
             priority
-            className="drop-shadow-2xl w-[240px] sm:w-[280px] md:w-[320px] h-auto"
+            className="w-[240px] sm:w-[280px] md:w-[320px] h-auto md:drop-shadow-2xl"
           />
         </div>
 

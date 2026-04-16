@@ -46,13 +46,19 @@ export default function AnimatedBackground() {
     let lastDrawTime = 0;
     // Throttle to ~30fps on mobile (33ms), full speed on desktop
     const frameBudget = mobile ? 33 : 0;
+    // Cap DPR on mobile — rendering at 3× on iPhone Pro Max wrecks compositing perf,
+    // but 1× looks blurry. 1.5× is a good middle ground for soft orbs.
+    const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2);
 
     function resize() {
-      if (!canvas) return;
+      if (!canvas || !ctx) return;
       w = window.innerWidth;
       h = window.innerHeight;
-      canvas.width = w;
-      canvas.height = h;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
     function init() {
@@ -94,22 +100,25 @@ export default function AnimatedBackground() {
       ctx.clearRect(0, 0, w, h);
 
       const t = performance.now() * 0.001;
-      const mx = mouseRef.current.x;
-      const my = mouseRef.current.y;
+      const mx = mobile ? 0 : mouseRef.current.x;
+      const my = mobile ? 0 : mouseRef.current.y;
 
       for (const p of particlesRef.current) {
         // Slow organic drift with sine wave wobble
         p.x += p.vx + Math.sin(t * 0.3 + p.pulsePhase) * 0.15;
         p.y += p.vy + Math.cos(t * 0.25 + p.pulsePhase) * 0.12;
 
-        // Mouse interaction - orbs gently attracted then repelled
-        const dx = p.x - mx;
-        const dy = p.y - my;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 400 && dist > 0) {
-          const push = ((400 - dist) / 400) * 0.12;
-          p.vx += (dx / dist) * push;
-          p.vy += (dy / dist) * push;
+        // Mouse interaction - orbs gently attracted then repelled (desktop only —
+        // touch devices never move the mouse and this runs O(n) per frame)
+        if (!mobile) {
+          const dx = p.x - mx;
+          const dy = p.y - my;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 400 && dist > 0) {
+            const push = ((400 - dist) / 400) * 0.12;
+            p.vx += (dx / dist) * push;
+            p.vy += (dy / dist) * push;
+          }
         }
 
         // Return to base velocity slowly
